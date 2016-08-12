@@ -5,17 +5,19 @@ before_install:
  - sudo apt-get install -qq build-essential zlib1g-dev libpcre3 libpcre3-dev unzip
 
 install:
- - export NGINX_VERSION=1.10.1
- - export NPS_VERSION=1.11.33.2
  - ./download-pagespeed
  - ./download-nginx
 
 script:
  - cd nginx-${NGINX_VERSION}/
- - ./configure --add-module=$HOME/ngx_pagespeed-release-${NPS_VERSION}-beta
+ - ./configure --add-module=$HOME/ngx_pagespeed-release-${NPS_VERSION}-beta ${PS_NGX_EXTRA_FLAGS}
  - make
  - sudo make install
 
+env:
+ global:
+  - export NGINX_VERSION=1.10.1
+  - export NPS_VERSION=1.11.33.2
 
 deploy:
  provider: releases
