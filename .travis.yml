@@ -16,15 +16,13 @@ script:
  - cd $HOME/nginx-${NGINX_VERSION}/
  - ./configure --add-module=$HOME/ngx_pagespeed-release-${NPS_VERSION}-beta ${PS_NGX_EXTRA_FLAGS}
  - make
- - sudo make install
- - ls -la /usr/local/nginx/sbin
+ - cp objs/nginx $TRAVIS_BUILD_DIR
 
 compiler: gcc
 
 deploy:
  provider: releases
  api-key: "${GITHUB_TOKEN}"
- file: "/usr/local/nginx/sbin/nginx"
  skip_cleanup: true
  on:
   tags: true
