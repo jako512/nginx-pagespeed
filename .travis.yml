@@ -11,6 +11,7 @@ install:
  - ./download-nginx
 
 script:
+ - cd nginx-${NGINX_VERSION}/
  - ./configure --add-module=$HOME/ngx_pagespeed-release-${NPS_VERSION}-beta
  - make
  - sudo make install
