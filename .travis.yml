@@ -19,6 +19,8 @@ env:
   - export NGINX_VERSION=1.10.1
   - export NPS_VERSION=1.11.33.2
 
+compiler: gcc
+
 deploy:
  provider: releases
  api-key: "ca0b48c95696649a986ea0e525b0714bac081142"
