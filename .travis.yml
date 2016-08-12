@@ -17,6 +17,7 @@ script:
  - ./configure --add-module=$HOME/ngx_pagespeed-release-${NPS_VERSION}-beta ${PS_NGX_EXTRA_FLAGS}
  - make
  - sudo make install
+ - ls -la /usr/local/nginx/sbin
 
 compiler: gcc
 
