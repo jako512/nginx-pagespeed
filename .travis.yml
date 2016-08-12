@@ -5,8 +5,8 @@ before_install:
  - sudo apt-get install -qq build-essential zlib1g-dev libpcre3 libpcre3-dev unzip
 
 install:
- - NGINX_VERSION=1.10.1
- - NPS_VERSION=1.11.33.2
+ - export NGINX_VERSION=1.10.1
+ - export NPS_VERSION=1.11.33.2
  - ./download-pagespeed
  - ./download-nginx
 
