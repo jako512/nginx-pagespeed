@@ -27,8 +27,8 @@ compiler: gcc
 
 deploy:
  provider: releases
- api-key: "ca0b48c95696649a986ea0e525b0714bac081142"
- file: "FILE TO UPLOAD"
+ api-key: "${GITHUB_TOKEN}"
+ file: "/usr/local/nginx/sbin/nginx"
  skip_cleanup: true
  on:
- tags: true
+  tags: true
