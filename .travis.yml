@@ -1,21 +1,21 @@
 language: cpp
 
 before_install:
-	- sudo apt-get update -qq
-	- sudo apt-get install -qq build-essential zlib1g-dev libpcre3 libpcre3-dev unzip
+ - sudo apt-get update -qq
+ - sudo apt-get install -qq build-essential zlib1g-dev libpcre3 libpcre3-dev unzip
 
 install:
-	- ./download-pagespeed
-	- ./download-nginx
+ - ./download-pagespeed
+ - ./download-nginx
 
 script:
-	- ./configure --add-module=$HOME/ngx_pagespeed-release-${NPS_VERSION}-beta
-	- make
-	- sudo make install
+ - ./configure --add-module=$HOME/ngx_pagespeed-release-${NPS_VERSION}-beta
+ - make
+ - sudo make install
 
 env:
-	- NGINX_VERSION=1.10.1
-	- NPS_VERSION=1.11.33.2
+ - NGINX_VERSION=1.10.1
+ - NPS_VERSION=1.11.33.2
 
 
 
@@ -23,9 +23,9 @@ deploy:
 
 
 deploy:
-	provider: releases
-	api-key: "ca0b48c95696649a986ea0e525b0714bac081142"
-	file: "FILE TO UPLOAD"
-	skip_cleanup: true
-	on:
-		tags: true
+ provider: releases
+ api-key: "ca0b48c95696649a986ea0e525b0714bac081142"
+ file: "FILE TO UPLOAD"
+ skip_cleanup: true
+ on:
+ tags: true
