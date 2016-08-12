@@ -14,8 +14,8 @@ script:
 	- sudo make install
 
 env:
-	- NGINX_VERSION=1.9.7
-	- NPS_VERSION=1.9.32.10
+	- NGINX_VERSION=1.10.1
+	- NPS_VERSION=1.11.33.2
 
 
 
