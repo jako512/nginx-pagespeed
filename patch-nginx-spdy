@@ -1,0 +1,3 @@
+cd
+wget https://raw.githubusercontent.com/felixbuenemann/sslconfig/updated-nginx-1.9.15-spdy-patch/patches/nginx_1_9_15_http2_spdy.patch
+git apply --directory=nginx-${NGINX_VERSION} nginx_1_9_15_http2_spdy.patch
