@@ -42,7 +42,7 @@ cd $HOME/nginx-${NGINX_VERSION}/
 --with-http_slice_module \
 --with-file-aio \
 --modules-path=%{_libdir}/nginx/modules \
---add-module=$HOME/ngx_pagespeed-release-${NPS_VERSION}-beta \
+--add-dynamic-module=$HOME/ngx_pagespeed-release-${NPS_VERSION}-beta \
 --with-http_spdy_module \
 --with-openssl=${HOME}/openssl-${OPENSSL_VERSION}
 make
