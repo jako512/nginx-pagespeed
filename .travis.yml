@@ -20,15 +20,9 @@ before_install:
  - sudo apt-get update -qq
  - sudo apt-get install -qq build-essential zlib1g-dev libpcre3 libpcre3-dev unzip libgd2-xpm-dev libxslt-dev libgeoip-dev libpam-dev
 
-install:
- - ./download-openssl
- - ./download-pagespeed
- - ./download-nginx
- - ./patch-nginx-spdy
-
 script:
- - ./build-nginx
- - cp $HOME/nginx-${NGINX_VERSION}/objs/nginx $TRAVIS_BUILD_DIR
+ - ./ubuntu-nginx
+ - cp $HOME/nginx-${NGINX_VERSION}/debian/build-full/objs/nginx $TRAVIS_BUILD_DIR
  - chmod 777 ${TRAVIS_BUILD_DIR}/nginx
 
 before_deploy:

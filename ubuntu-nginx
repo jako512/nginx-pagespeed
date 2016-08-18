@@ -1,0 +1,57 @@
+# Nginx sources
+cd
+sudo add-apt-repository -ys ppa:nginx/stable
+sudo apt-get update -yqq
+sudo apt-get build-dep -yqq nginx=$NGINX_VERSION
+sudo apt-get source nginx
+
+# Google PageSpeed Module
+cd
+wget https://github.com/pagespeed/ngx_pagespeed/archive/release-${NPS_VERSION}-beta.zip -O release-${NPS_VERSION}-beta.zip
+unzip release-${NPS_VERSION}-beta.zip
+cd ngx_pagespeed-release-${NPS_VERSION}-beta/
+wget https://dl.google.com/dl/page-speed/psol/${NPS_VERSION}.tar.gz
+tar -xzvf ${NPS_VERSION}.tar.gz  # extracts to psol/
+ln -sf ~/ngx_pagespeed-release-${NPS_VERSION}-beta ~/nginx-${NGINX_VERSION}/debian/modules/ngx_pagespeed
+cp ~/nginx-${NGINX_VERSION}/debian/rules ~/nginx-${NGINX_VERSION}/debian/rules.pre.ps
+sed -i '/\t\t\t--with-threads \\/a\\t\t\t--add-module=$(MODULESDIR)\/ngx_pagespeed \\' ~/nginx-${NGINX_VERSION}/debian/rules
+
+# OpenSSL with APLN
+cd
+wget https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
+tar -xzvf openssl-${OPENSSL_VERSION}.tar.gz
+ln -sf ~/openssl-${OPENSSL_VERSION} ~/openssl
+mkdir -p ~/openssl/.openssl
+ln -sfn .. ~/openssl/.openssl/lib
+cp ~/nginx-${NGINX_VERSION}/debian/rules ~/nginx-${NGINX_VERSION}/debian/rules.pre.openssl
+sed -i '/\t\t\t--with-ipv6 \\/a\\t\t\t--with-openssl=~/openssl \\' ~/nginx-${NGINX_VERSION}/debian/rules
+
+# CloudFlare SPDY patch: https://blog.cloudflare.com/open-sourcing-our-nginx-http-2-spdy-code/
+cd
+wget https://raw.githubusercontent.com/felixbuenemann/sslconfig/updated-nginx-1.9.15-spdy-patch/patches/nginx_1_9_15_http2_spdy.patch
+git apply --directory=nginx-${NGINX_VERSION} nginx_1_9_15_http2_spdy.patch
+cp ~/nginx-${NGINX_VERSION}/debian/rules ~/nginx-${NGINX_VERSION}/debian/rules.pre.spdy
+sed -i '/\t\t\t--with-http_v2_module \\/a\\t\t\t--with-http_spdy_module \\' ~/nginx-${NGINX_VERSION}/debian/rules
+
+# Update Changelog
+CHANGELOG="nginx (${NGINX_VERSION}$(cat <<-END
+-0+trusty0-jako512) trusty-proposed; urgency=medium
+
+  * OpenSSL with APLN
+  * Support for both HTTP2 and SPDY
+  * PageSpeed integrated
+
+ -- Jaroslav Kostal <jaroslav@kostal.sk>
+END
+)  `date -R`\n"
+
+cp ~/nginx-${NGINX_VERSION}/debian/changelog ~/nginx-${NGINX_VERSION}/debian/changelog.bak
+echo -e "${CHANGELOG}\n$(cat ~/nginx-${NGINX_VERSION}/debian/changelog)" > ~/nginx-${NGINX_VERSION}/debian/changelog
+
+# Build NGINX
+cd ~/nginx-${NGINX_VERSION}
+sudo dpkg-buildpackage -b
+
+# Install NGINX
+cd
+sudo dpkg --install nginx-full_${NGINX_VERSION}-0+trusty0-jako512_amd64.deb
